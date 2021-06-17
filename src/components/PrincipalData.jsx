@@ -6,7 +6,7 @@ const PrincipalData = () => {
     const getLocation = () =>{
         navigator.geolocation.getCurrentPosition((position) => console.log(position))
     }
-    // "api.openweathermap.org/data/2.5/weather?q=Parana&appid=bd438ef2a0f3eafb7c14283739e9d036"
+
     return (
         <div className="principalData">
             <div className="nav">
