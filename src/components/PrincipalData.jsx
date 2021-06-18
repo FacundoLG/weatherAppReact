@@ -1,12 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../assets/styles/principalData.css'
 import { BsSearch } from "react-icons/bs";
-import { BiCurrentLocation } from "react-icons/bi";
-const PrincipalData = () => {
+import { BiCurrentLocation,BiWind,BiWorld } from "react-icons/bi";
+import {WiHumidity} from "react-icons/wi"
+import { connect } from 'react-redux';
+import { getWeather } from '../redux/actions';
+const PrincipalData = (props) => {
+    const {weatherData} = props
+    useEffect(() =>{
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&lang=es&units=metric&APPID=bd438ef2a0f3eafb7c14283739e9d036')
+            .then(res => res.json())
+            .then((data)=>{
+                props.getWeather(data)
+            })
+    },[])
     const getLocation = () =>{
         navigator.geolocation.getCurrentPosition((position) => console.log(position))
+        
     }
-    // "api.openweathermap.org/data/2.5/weather?q=Parana&appid=bd438ef2a0f3eafb7c14283739e9d036"
     return (
         <div className="principalData">
             <div className="nav">
@@ -18,31 +29,41 @@ const PrincipalData = () => {
             </div>
             <div className="data">
                 <div>
-                    <h4>"Location"</h4>
+                    <h2>{weatherData.name}</h2>
                 </div>
                 
                 <div className="weatherData">
-                    <img src="" alt="" />
-                    <h5>"Description"</h5>
+                    <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt="" />
+                    <h3>{weatherData.weather[0].description}</h3>
+                    <h5>{weatherData.main.temp}ºC</h5>
+                    <h5>{weatherData.main.feels_like}ºC</h5>
                 </div>
                 
                 <div className="weatherData inline">
                     <div className="otherData">
-                        <img src="" alt="" />
-                        <p>"humedad"</p>
+                        <i><WiHumidity/></i>
+                        <p>{weatherData.main.humidity}%</p>
                     </div>
                     <div className="otherData">
-                        <img src="" alt="" />
-                        <p>"viento"</p>
+                        <i><BiWind/></i>
+                        <p>{weatherData.wind.speed}K/h</p>
+                        <p>{weatherData.wind.deg}º</p>
+                        {/* <p>{weatherData.wind.gust}</p> */}
                     </div>
                     <div className="otherData">
-                        <img src="" alt="" />
-                        <p>"aire"</p>                        
+                        <i><BiWorld/></i>
+                        <p>{weatherData.main.pressure}hPa</p>                        
                     </div>
                 </div>
             </div>
         </div>
     )
 }
+const mapStateToProps = (state) =>({
+    weatherData: state.Data
+})
+const mapDistpachToProps = ({
+        getWeather,
+})
 
-export default PrincipalData
+export default connect(mapStateToProps,mapDistpachToProps)(PrincipalData)

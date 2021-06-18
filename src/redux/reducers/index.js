@@ -1,7 +1,10 @@
 const reducers = (state,action) =>{
     switch (action.type) {
         case 'GET_WEATHER':
-            return action.payload    
+            return {
+                ...state,
+                Data: action.payload
+            }    
         default:
             return state
     }
