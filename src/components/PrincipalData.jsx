@@ -7,26 +7,49 @@ import { connect } from 'react-redux';
 import { getWeather } from '../redux/actions';
 const PrincipalData = (props) => {
     const {weatherData} = props
+    var key = ''
     useEffect(() =>{
-        fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&lang=es&units=metric&APPID=')
+        getWeather("London",key)
+    },[])
+    const handleSearch = () =>{
+        var text = document.getElementById("searchInput").value
+        console.log(text)
+        getWeather(text,key)
+        
+    }
+    const getWeather = (searchText,key) => {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchText},uk&lang=es&units=metric&APPID=${key}`)
             .then(res => res.json())
             .then((data)=>{
                 props.getWeather(data)
+                console.log(data)
             })
-    },[])
-    const getLocation = () =>{
-        navigator.geolocation.getCurrentPosition((position) => console.log(position))
+    }
+    const getLocation = (key) =>{
+        navigator.geolocation.getCurrentPosition((position) =>{ 
+            var {latitude,longitude} = position.coords
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${key}`)
+                .then(res => res.json())
+                .then((data)=>{
+                props.getWeather(data)
+                })
+        })
         
+        
+
     }
     return (
         <div className="principalData">
+            {weatherData.name ?
+            <>
             <div className="nav">
                 <div className="searchInput">
-                    <input type="text" placeholder="type your location" />
-                    <button className="icon"><BsSearch/></button>
+                    <input type="text" id="searchInput" placeholder="type your location" />
+                    <button className="icon" onClick={handleSearch}><BsSearch/></button>
                 </div>
-                <button className="icon big" onClick={getLocation}><BiCurrentLocation/></button>
+                <button className="icon big" onClick={() => getLocation(key)}><BiCurrentLocation/></button>
             </div>
+
             <div className="data">
                 <div>
                     <h2>{weatherData.name}</h2>
@@ -48,7 +71,6 @@ const PrincipalData = (props) => {
                         <i><BiWind/></i>
                         <p>{weatherData.wind.speed}K/h</p>
                         <p>{weatherData.wind.deg}º</p>
-                        {/* <p>{weatherData.wind.gust}</p> */}
                     </div>
                     <div className="otherData">
                         <i><BiWorld/></i>
@@ -56,6 +78,8 @@ const PrincipalData = (props) => {
                     </div>
                 </div>
             </div>
+        </>
+        :""}
         </div>
     )
 }
