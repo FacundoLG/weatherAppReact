@@ -3,6 +3,7 @@ import '../assets/styles/principalData.css'
 import { BsSearch } from "react-icons/bs";
 import { BiCurrentLocation,BiWind,BiWorld } from "react-icons/bi";
 import {WiHumidity} from "react-icons/wi"
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { connect } from 'react-redux';
 import { getWeather } from '../redux/actions';
 const PrincipalData = (props) => {
@@ -10,7 +11,7 @@ const PrincipalData = (props) => {
     var key = ''
     useEffect(() =>{
         getWeather("London",key)
-    },[])
+    },[key])
     const handleSearch = () =>{
         var text = document.getElementById("searchInput").value
         console.log(text)
@@ -40,8 +41,6 @@ const PrincipalData = (props) => {
     }
     return (
         <div className="principalData">
-            {weatherData.name ?
-            <>
             <div className="nav">
                 <div className="searchInput">
                     <input type="text" id="searchInput" placeholder="type your location" />
@@ -49,7 +48,8 @@ const PrincipalData = (props) => {
                 </div>
                 <button className="icon big" onClick={() => getLocation(key)}><BiCurrentLocation/></button>
             </div>
-
+            {weatherData.name ?
+            <>
             <div className="data">
                 <div>
                     <h2>{weatherData.name}</h2>
@@ -57,9 +57,11 @@ const PrincipalData = (props) => {
                 
                 <div className="weatherData">
                     <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt="" />
-                    <h3>{weatherData.weather[0].description}</h3>
-                    <h5>{weatherData.main.temp}ºC</h5>
-                    <h5>{weatherData.main.feels_like}ºC</h5>
+                    {/* <h3>{weatherData.weather[0].description}</h3> */}
+                    <div className="temp">
+                        <h5>{Math.floor(weatherData.main.temp)}ºC</h5>
+                        {/* <h5>{Math.floor(weatherData.main.feels_like)}ºC</h5> */}
+                    </div>
                 </div>
                 
                 <div className="weatherData inline">
@@ -79,7 +81,11 @@ const PrincipalData = (props) => {
                 </div>
             </div>
         </>
-        :""}
+        :
+        <div className="loading">
+            <CircularProgress/>
+        </div>
+        }
         </div>
     )
 }
