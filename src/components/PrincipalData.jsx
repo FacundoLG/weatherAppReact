@@ -8,7 +8,7 @@ import { getWeather } from '../redux/actions';
 const PrincipalData = (props) => {
     const {weatherData} = props
     useEffect(() =>{
-        fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&lang=es&units=metric&APPID=bd438ef2a0f3eafb7c14283739e9d036')
+        fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&lang=es&units=metric&APPID=')
             .then(res => res.json())
             .then((data)=>{
                 props.getWeather(data)
