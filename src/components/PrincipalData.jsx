@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { getWeather } from '../redux/actions';
 const PrincipalData = (props) => {
     const {weatherData} = props
-    var key = ''
+    var key = 'bd438ef2a0f3eafb7c14283739e9d036'
     useEffect(() =>{
         getWeather("London",key)
     },[key])
@@ -29,7 +29,7 @@ const PrincipalData = (props) => {
     const getLocation = (key) =>{
         navigator.geolocation.getCurrentPosition((position) =>{ 
             var {latitude,longitude} = position.coords
-            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${key}`)
+            fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&lang=es&appid=${key}`)
                 .then(res => res.json())
                 .then((data)=>{
                 props.getWeather(data)
@@ -53,18 +53,19 @@ const PrincipalData = (props) => {
             <div className="data">
                 <div>
                     <h2>{weatherData.name}</h2>
-                </div>
-                
+                    <h3>{weatherData.weather[0].description}</h3>
+
+                </div>                
                 <div className="weatherData">
-                    <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt="" />
-                    {/* <h3>{weatherData.weather[0].description}</h3> */}
-                    <div className="temp">
-                        <h5>{Math.floor(weatherData.main.temp)}ºC</h5>
-                        {/* <h5>{Math.floor(weatherData.main.feels_like)}ºC</h5> */}
+                    <div className="tempAndImg">
+                        <img src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`} alt="" />
+                        <div>
+                            <h5 className="temp">{Math.floor(weatherData.main.temp)}ºC</h5>       
+                        </div>
                     </div>
+                    <h5 className="feelslike">feels like {Math.floor(weatherData.main.feels_like)}ºC</h5>
                 </div>
-                
-                <div className="weatherData inline">
+                <div className="secondaryData">
                     <div className="otherData">
                         <i><WiHumidity/></i>
                         <p>{weatherData.main.humidity}%</p>
