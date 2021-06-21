@@ -1,3 +1,21 @@
 .home {
   display: flex;
+  justify-content: left;
+  align-items: center;
+  width: 100vw;
+}
+.graphics {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100vh;
+  width: 100%;
+}
+@media (max-width: 500px) {
+  .principalData {
+    width: 100vw;
+  }
+  .home {
+    flex-direction: column;
+  }
 }

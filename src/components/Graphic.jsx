@@ -1,10 +1,14 @@
 import React from 'react'
 import '../assets/styles/graphic.css'
 const Graphic = () => {
-    var graphic = [10,30,20,50,70,100,23,10]
+    var graphic = [4,30,20,50,70,100,23,10,50,90,10,80,54,78,12,45,78,23,89]
     return (
         <div className="graphicContainer">
-            <h3>Temperature</h3>
+            <div className="graphicButtons">
+                <button>Temperature</button>
+                <button>Humidity</button>
+                <button>RainProvabilitys</button>
+            </div>
             <div className="graphic">
                 {graphic.map((graphicU,i)=>
                     <div className="unityContainer">

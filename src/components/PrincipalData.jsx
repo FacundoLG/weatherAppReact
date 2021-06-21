@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { getWeather } from '../redux/actions';
 const PrincipalData = (props) => {
     const {weatherData} = props
-    var key = 'bd438ef2a0f3eafb7c14283739e9d036'
+    var key = ''
     useEffect(() =>{
         getWeather("London",key)
     },[key])
